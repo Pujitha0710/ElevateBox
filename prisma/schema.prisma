@@ -41,8 +41,8 @@ model User {
   role      Role
   createdAt DateTime @default(now())
 
-  sessions    Session[]
-  documents   Document[]   @relation("DocumentAuthor")
+  sessions   Session[]
+  documents  Document[]   @relation("DocumentAuthor")
   auditEvents AuditEvent[] @relation("AuditActor")
 
   @@index([role])
@@ -80,7 +80,7 @@ model Document {
 }
 
 model AuditEvent {
-  id             String          @id @default(cuid())
+  id             String         @id @default(cuid())
   documentId     String
   actorId        String
   action         AuditAction
@@ -88,7 +88,7 @@ model AuditEvent {
   newStatus      DocumentStatus?
   comment        String?
   metadata       Json?
-  createdAt      DateTime        @default(now())
+  createdAt      DateTime       @default(now())
 
   document Document @relation(fields: [documentId], references: [id], onDelete: Restrict)
   actor    User     @relation("AuditActor", fields: [actorId], references: [id], onDelete: Restrict)

@@ -39,3 +39,282 @@ main {
   margin: 0 auto;
   padding: 40px 0;
 }
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+p {
+  line-height: 1.6;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.page-heading {
+  margin-bottom: 28px;
+}
+
+.page-heading > p:last-child {
+  max-width: 700px;
+  color: #586174;
+}
+
+.eyebrow {
+  margin-bottom: 8px;
+  color: #3156b5;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.button {
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 700;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
+}
+
+.button-primary {
+  color: #ffffff;
+  background: #3156b5;
+}
+
+.button-primary:hover:not(:disabled) {
+  background: #244695;
+}
+
+.button-secondary {
+  color: #263249;
+  background: #ffffff;
+  border-color: #ced4df;
+}
+
+.button-secondary:hover:not(:disabled) {
+  background: #f2f4f7;
+}
+
+.alert {
+  margin-bottom: 20px;
+  padding: 13px 15px;
+  border-radius: 8px;
+}
+
+.alert-error {
+  color: #8b1e1e;
+  background: #fff0f0;
+  border: 1px solid #f0bcbc;
+}
+
+.inline-error {
+  display: block;
+  margin-top: 6px;
+  color: #9b1c1c;
+  font-size: 0.82rem;
+}
+
+.login-page {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 280px), 1fr)
+  );
+  gap: 18px;
+}
+
+.user-card {
+  display: flex;
+  min-height: 230px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #dce1e8;
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgb(27 39 67 / 7%);
+}
+
+.user-card h2 {
+  margin-top: 14px;
+  margin-bottom: 5px;
+  font-size: 1.25rem;
+}
+
+.user-card p {
+  margin-bottom: 0;
+  color: #667085;
+  overflow-wrap: anywhere;
+}
+
+.user-card .button {
+  width: 100%;
+}
+
+.role-badge {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.role-author {
+  color: #235437;
+  background: #e5f5ea;
+}
+
+.role-reviewer {
+  color: #61470d;
+  background: #fff3cc;
+}
+
+.role-admin {
+  color: #6a244d;
+  background: #f8e5f1;
+}
+
+.role-viewer {
+  color: #31476e;
+  background: #e9eef8;
+}
+
+.login-note {
+  margin-top: 24px;
+  padding: 16px 18px;
+  color: #515b6d;
+  background: #edf1f6;
+  border-radius: 9px;
+}
+
+.app-header {
+  color: #ffffff;
+  background: #17233d;
+  border-bottom: 1px solid #253453;
+}
+
+.header-inner {
+  display: flex;
+  width: min(1100px, calc(100% - 32px));
+  min-height: 72px;
+  margin: 0 auto;
+  align-items: center;
+  gap: 28px;
+}
+
+.brand {
+  font-size: 1.08rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.header-nav {
+  display: flex;
+  gap: 18px;
+  margin-right: auto;
+}
+
+.header-nav a {
+  color: #dce4f5;
+}
+
+.header-nav a:hover {
+  color: #ffffff;
+}
+
+.current-user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.current-user > div:first-child {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.current-user span {
+  margin-top: 2px;
+  color: #b9c5dd;
+  font-size: 0.78rem;
+}
+
+.logout-control {
+  text-align: left;
+}
+
+.panel {
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #dce1e8;
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgb(27 39 67 / 6%);
+}
+
+.details-list {
+  margin: 20px 0;
+}
+
+.details-list > div {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 20px;
+  padding: 11px 0;
+  border-bottom: 1px solid #e5e8ed;
+}
+
+.details-list dt {
+  color: #667085;
+  font-weight: 700;
+}
+
+.details-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .header-inner {
+    padding: 14px 0;
+    flex-wrap: wrap;
+  }
+
+  .header-nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .current-user {
+    margin-left: auto;
+  }
+
+  .current-user > div:first-child {
+    display: none;
+  }
+}
