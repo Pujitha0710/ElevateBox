@@ -2,19 +2,12 @@ import { NextResponse } from "next/server";
 
 import { startSession } from "@/lib/auth";
 import { loginSchema } from "@/lib/auth-validation";
-import {
-  apiError,
-  getErrorMessage,
-} from "@/lib/api-response";
+import { apiError, getErrorMessage } from "@/lib/api-response";
 import { db } from "@/lib/db";
 
-export async function POST(
-  request: Request,
-): Promise<NextResponse> {
+export async function POST(request: Request): Promise<NextResponse> {
   try {
-    const requestBody: unknown = await request
-      .json()
-      .catch(() => null);
+    const requestBody: unknown = await request.json().catch(() => null);
 
     const parsed = loginSchema.safeParse(requestBody);
 
@@ -59,10 +52,6 @@ export async function POST(
   } catch (error: unknown) {
     console.error("Login failed:", error);
 
-    return apiError(
-      500,
-      "INTERNAL_ERROR",
-      getErrorMessage(error),
-    );
+    return apiError(500, "INTERNAL_ERROR", getErrorMessage(error));
   }
 }

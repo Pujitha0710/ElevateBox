@@ -19,14 +19,10 @@ type ErrorResponse = {
   message?: string;
 };
 
-export default function LoginForm({
-  users,
-}: LoginFormProps) {
+export default function LoginForm({ users }: LoginFormProps) {
   const router = useRouter();
 
-  const [activeEmail, setActiveEmail] = useState<string | null>(
-    null,
-  );
+  const [activeEmail, setActiveEmail] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function login(email: string): Promise<void> {
@@ -51,18 +47,14 @@ export default function LoginForm({
         .catch(() => null)) as ErrorResponse | null;
 
       if (!response.ok) {
-        throw new Error(
-          responseBody?.message ?? "Unable to log in.",
-        );
+        throw new Error(responseBody?.message ?? "Unable to log in.");
       }
 
       router.replace("/documents");
       router.refresh();
     } catch (loginError: unknown) {
       setError(
-        loginError instanceof Error
-          ? loginError.message
-          : "Unable to log in.",
+        loginError instanceof Error ? loginError.message : "Unable to log in.",
       );
     } finally {
       setActiveEmail(null);
@@ -85,9 +77,7 @@ export default function LoginForm({
           return (
             <article className="user-card" key={user.id}>
               <div>
-                <span
-                  className={`role-badge role-${user.role}`}
-                >
+                <span className={`role-badge role-${user.role}`}>
                   {user.roleLabel}
                 </span>
 
@@ -101,9 +91,7 @@ export default function LoginForm({
                 disabled={isDisabled}
                 onClick={() => void login(user.email)}
               >
-                {isLoading
-                  ? "Logging in..."
-                  : `Continue as ${user.name}`}
+                {isLoading ? "Logging in..." : `Continue as ${user.name}`}
               </button>
             </article>
           );

@@ -36,18 +36,14 @@ export default async function LoginPage() {
       <section className="page-heading">
         <p className="eyebrow">ElevateBox Engineering Challenge</p>
         <h1>Document Approval System</h1>
-        <p>
-          Select a seeded account to test its role and
-          permissions.
-        </p>
+        <p>Select a seeded account to test its role and permissions.</p>
       </section>
 
       <LoginForm users={loginUsers} />
 
       <section className="login-note">
-        <strong>Development authentication:</strong> no passwords,
-        registration or external login providers are required for
-        this challenge.
+        <strong>Development authentication:</strong> no passwords, registration
+        or external login providers are required for this challenge.
       </section>
     </main>
   );

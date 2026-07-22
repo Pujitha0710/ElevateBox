@@ -6,9 +6,11 @@ export type ApiErrorCode =
   | "FORBIDDEN"
   | "NOT_FOUND"
   | "CONFLICT"
+  | "STALE_VERSION"
+  | "INVALID_TRANSITION"
   | "INTERNAL_ERROR";
 
-type ApiErrorBody = {
+export type ApiErrorBody = {
   error: ApiErrorCode;
   message: string;
   details?: unknown;
@@ -31,9 +33,7 @@ export function apiError(
 }
 
 export function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return "An unexpected error occurred.";
+  return error instanceof Error
+    ? error.message
+    : "An unexpected error occurred.";
 }

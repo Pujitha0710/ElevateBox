@@ -31,9 +31,7 @@ export default function LogoutButton() {
         .catch(() => null)) as ErrorResponse | null;
 
       if (!response.ok) {
-        throw new Error(
-          responseBody?.message ?? "Unable to log out.",
-        );
+        throw new Error(responseBody?.message ?? "Unable to log out.");
       }
 
       router.replace("/login");

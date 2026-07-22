@@ -1,4 +1,4 @@
-import { DocumentStatus } from "@prisma/client";
+import { AuditAction, DocumentStatus } from "@prisma/client";
 
 export const TRANSITION_TARGETS = {
   submit: DocumentStatus.submitted,
@@ -11,14 +11,20 @@ export const TRANSITION_TARGETS = {
 
 export type TransitionAction = keyof typeof TRANSITION_TARGETS;
 
+export const TRANSITION_AUDIT_ACTIONS: Record<TransitionAction, AuditAction> = {
+  submit: AuditAction.submitted,
+  approve: AuditAction.approved,
+  reject: AuditAction.rejected,
+  reopen: AuditAction.reopened,
+  publish: AuditAction.published,
+  archive: AuditAction.archived,
+};
+
 export const VALID_TRANSITIONS: Record<
   DocumentStatus,
   readonly DocumentStatus[]
 > = {
-  [DocumentStatus.draft]: [
-    DocumentStatus.submitted,
-    DocumentStatus.archived,
-  ],
+  [DocumentStatus.draft]: [DocumentStatus.submitted, DocumentStatus.archived],
 
   [DocumentStatus.submitted]: [
     DocumentStatus.approved,
@@ -38,18 +44,7 @@ export const VALID_TRANSITIONS: Record<
   [DocumentStatus.archived]: [],
 };
 
-export function isTransitionAction(
-  value: unknown,
-): value is TransitionAction {
-  return (
-    typeof value === "string" &&
-    Object.prototype.hasOwnProperty.call(TRANSITION_TARGETS, value)
-  );
-}
-
-export function getTargetStatus(
-  action: TransitionAction,
-): DocumentStatus {
+export function getTargetStatus(action: TransitionAction): DocumentStatus {
   return TRANSITION_TARGETS[action];
 }
 

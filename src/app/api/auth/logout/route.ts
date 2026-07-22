@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { endCurrentSession } from "@/lib/auth";
-import {
-  apiError,
-  getErrorMessage,
-} from "@/lib/api-response";
+import { apiError, getErrorMessage } from "@/lib/api-response";
 
 export async function POST(): Promise<NextResponse> {
   try {
@@ -19,10 +16,6 @@ export async function POST(): Promise<NextResponse> {
   } catch (error: unknown) {
     console.error("Logout failed:", error);
 
-    return apiError(
-      500,
-      "INTERNAL_ERROR",
-      getErrorMessage(error),
-    );
+    return apiError(500, "INTERNAL_ERROR", getErrorMessage(error));
   }
 }

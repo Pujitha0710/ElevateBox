@@ -16,8 +16,7 @@ export default async function DocumentsPage() {
           <p className="eyebrow">Authentication verified</p>
           <h1>Documents</h1>
           <p>
-            You are logged in as{" "}
-            <strong>{ROLE_LABELS[user.role]}</strong>.
+            You are logged in as <strong>{ROLE_LABELS[user.role]}</strong>.
           </p>
         </section>
 
@@ -41,10 +40,7 @@ export default async function DocumentsPage() {
             </div>
           </dl>
 
-          <p>
-            The actual document list will be added in the next
-            parts.
-          </p>
+          <p>The actual document list will be added in the next parts.</p>
         </section>
       </main>
     </>

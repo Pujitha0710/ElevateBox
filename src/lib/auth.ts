@@ -2,7 +2,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
+import { AppError } from "@/lib/app-error";
 import { db } from "@/lib/db";
 
 export const SESSION_COOKIE_NAME = "elevatebox_session";
@@ -43,16 +43,10 @@ function isUniqueConstraintError(error: unknown): boolean {
   );
 }
 
-async function createDatabaseSession(
-  userId: string,
-): Promise<CreatedSession> {
+async function createDatabaseSession(userId: string): Promise<CreatedSession> {
   const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
 
-  for (
-    let attempt = 1;
-    attempt <= SESSION_CREATION_ATTEMPTS;
-    attempt += 1
-  ) {
+  for (let attempt = 1; attempt <= SESSION_CREATION_ATTEMPTS; attempt += 1) {
     const rawToken = generateSessionToken();
     const tokenHash = hashSessionToken(rawToken);
 
@@ -85,8 +79,7 @@ async function createDatabaseSession(
 }
 
 export async function startSession(userId: string): Promise<void> {
-  const { rawToken, expiresAt } =
-    await createDatabaseSession(userId);
+  const { rawToken, expiresAt } = await createDatabaseSession(userId);
 
   const cookieStore = await cookies();
 
@@ -170,4 +163,13 @@ export async function endCurrentSession(): Promise<void> {
   }
 
   cookieStore.delete(SESSION_COOKIE_NAME);
+}
+export async function requireApiUser(): Promise<CurrentUser> {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    throw new AppError(401, "UNAUTHENTICATED", "You must log in to continue.");
+  }
+
+  return user;
 }
