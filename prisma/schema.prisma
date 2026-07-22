@@ -1,12 +1,99 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+enum Role {
+  viewer
+  author
+  reviewer
+  admin
+}
+
+enum DocumentStatus {
+  draft
+  submitted
+  approved
+  rejected
+  published
+  archived
+}
+
+enum AuditAction {
+  created
+  edited
+  submitted
+  approved
+  rejected
+  reopened
+  published
+  archived
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      Role
+  createdAt DateTime @default(now())
+
+  sessions    Session[]
+  documents   Document[]   @relation("DocumentAuthor")
+  auditEvents AuditEvent[] @relation("AuditActor")
+
+  @@index([role])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Document {
+  id        String         @id @default(cuid())
+  title     String
+  body      String
+  status    DocumentStatus @default(draft)
+  version   Int            @default(1)
+  authorId  String
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  author      User         @relation("DocumentAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  auditEvents AuditEvent[]
+
+  @@index([authorId])
+  @@index([status])
+  @@index([status, updatedAt])
+}
+
+model AuditEvent {
+  id             String          @id @default(cuid())
+  documentId     String
+  actorId        String
+  action         AuditAction
+  previousStatus DocumentStatus?
+  newStatus      DocumentStatus?
+  comment        String?
+  metadata       Json?
+  createdAt      DateTime        @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Restrict)
+  actor    User     @relation("AuditActor", fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([documentId, createdAt])
+  @@index([actorId])
+  @@index([action])
 }
