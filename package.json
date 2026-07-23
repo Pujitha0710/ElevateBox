@@ -10,7 +10,8 @@
     "db:generate": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "db:verify": "tsx scripts/verify-db.ts"
+    "db:verify": "tsx scripts/verify-db.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
