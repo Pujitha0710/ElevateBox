@@ -12,9 +12,16 @@ export type DocumentPermissionTarget = {
   status: DocumentStatus;
 };
 
-const reviewerVisibleStatuses: DocumentStatus[] = [
+const reviewerListStatuses: DocumentStatus[] = [
   DocumentStatus.submitted,
   DocumentStatus.approved,
+  DocumentStatus.published,
+];
+
+const reviewerViewStatuses: DocumentStatus[] = [
+  DocumentStatus.submitted,
+  DocumentStatus.approved,
+  DocumentStatus.rejected,
   DocumentStatus.published,
 ];
 
@@ -44,7 +51,7 @@ export function getDocumentVisibilityWhere(
     case Role.reviewer:
       return {
         status: {
-          in: reviewerVisibleStatuses,
+          in: reviewerListStatuses,
         },
       };
 
@@ -75,7 +82,7 @@ export function canViewDocument(
       );
 
     case Role.reviewer:
-      return reviewerVisibleStatuses.includes(document.status);
+      return reviewerViewStatuses.includes(document.status);
 
     case Role.viewer:
       return document.status === DocumentStatus.published;

@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import Link from "next/link";
 
 import LogoutButton from "@/components/LogoutButton";
@@ -9,6 +10,10 @@ type HeaderProps = {
 };
 
 export default function Header({ user }: HeaderProps) {
+  const canReview =
+    user.role === Role.reviewer ||
+    user.role === Role.admin;
+
   return (
     <header className="app-header">
       <div className="header-inner">
@@ -16,13 +21,35 @@ export default function Header({ user }: HeaderProps) {
           ElevateBox Approval
         </Link>
 
-        <nav className="header-nav" aria-label="Main navigation">
-          <Link href="/documents">Documents</Link>
+        <nav
+          className="header-nav"
+          aria-label="Main navigation"
+        >
+          <Link href="/documents">
+            Documents
+          </Link>
+
+          {user.role === Role.author ? (
+            <Link href="/documents/new">
+              New Document
+            </Link>
+          ) : null}
+
+          {canReview ? (
+            <Link href="/review">
+              Review Queue
+            </Link>
+          ) : null}
+
+          <Link href="/published">
+            Published
+          </Link>
         </nav>
 
         <div className="current-user">
           <div>
             <strong>{user.name}</strong>
+
             <span>
               {ROLE_LABELS[user.role]} · {user.email}
             </span>
