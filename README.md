@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ElevateBox Document Approval System
 
-## Getting Started
+Hey there! This is my submission for the ElevateBox Software Engineering Challenge—a fully functional document approval and publishing workflow app built with a strong focus on security, data integrity, and correctness.
 
-First, run the development server:
+I put this together to handle the full lifecycle of a document, making sure all authorization checks, state transitions, and concurrency safeguards happen solidly on the backend.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## What it Does
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Seeded Login:** Quickly switch between pre-set roles (Author, Reviewer, Admin, Viewer) without messing with registration flows.
+* **Strict Role Permissions:** Users can only perform actions allowed by their role and document ownership (e.g., authors can't approve their own work, and viewers can only read published stuff).
+* **Document Workflow:** Manages documents smoothly through Draft, Submitted, Approved, Rejected, Published, and Archived states with complete server-side validation.
+* **Mandatory Rejection Feedback:** Reviewers are required to leave a comment whenever they reject a submission.
+* **Audit Logging:** Every single action leaves an immutable, timestamped trail attached to the document.
+* **Concurrency Control:** Leverages version checks to prevent race conditions or stale updates from overwriting someone else's work (returning a clean 409 conflict if things get out of sync).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* **Next.js** (App Router)
+* **TypeScript** for type safety
+* **Prisma** with SQLite for data persistence
+* **Zod** for robust input validation
+* **Vitest** for automated unit testing
 
-## Learn More
+## Roles & Permissions Breakdown
 
-To learn more about Next.js, take a look at the following resources:
+### Author
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Create new documents from scratch.
+* Edit their own drafts or documents that were sent back as rejected.
+* Submit drafts for review.
+* Reopen rejected documents to fix and resubmit.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Reviewer
 
-## Deploy on Vercel
+* Review submitted documents in the queue.
+* Approve submissions or reject them (with a required comment).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Admin
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Access all documents across the board.
+* Push approved documents live to published status.
+* Archive active or published documents when needed.
+
+### Viewer
+
+* Read-only access restricted strictly to published documents.
+
+## The Workflow State Machine
+
+draft → submitted → approved → published
+                  ↘ rejected → draft
+
+draft / submitted / approved / published → archived
